@@ -8,8 +8,6 @@ let taskSchema = new Schema(
     description: { type: String, required: true },
     priority: { type: Number, required: true },
     deadline: { type: Date },
-    list:{type: Schema.Types.ObjectId, ref: 'list', required: true},
-    user:{type: Schema.Types.ObjectId, ref: 'user', required: true},
     date: { type: Date, default: Date.now }
 
   }

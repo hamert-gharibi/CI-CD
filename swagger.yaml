@@ -29,8 +29,6 @@ components:
           type: number
         deadline:
           type: number
-        situation:
-          type: string
     
     User:
       type: object

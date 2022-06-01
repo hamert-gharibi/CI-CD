@@ -44,7 +44,6 @@ describe('User workflow tests', () => {
                             description: "Test task Description",
                             priority: 10,
                             deadline: "2022-05-23T00:00:00.000Z",
-                            situation: "Done"
                         };
 
                         chai.request(server)
@@ -62,7 +61,6 @@ describe('User workflow tests', () => {
                                 expect(savedtask.description).to.be.equal(task.description);
                                 expect(savedtask.priority).to.be.equal(task.priority);
                                 expect(savedtask.deadline).to.be.equal(task.deadline);
-                                expect(savedtask.situation).to.be.equal(task.situation);
 
                                 // 4) Verify one task in test DB
                                 chai.request(server)
@@ -120,8 +118,7 @@ describe('User workflow tests', () => {
                             title: "Task",
                             description: "Test task Description",
                             priority: 10,
-                            deadline: "2022-05-23T00:00:00.000Z",
-                            situation: "Done"
+                            deadline: "2022-05-23T00:00:00.000Z"
                         };
 
                         chai.request(server)
@@ -140,7 +137,6 @@ describe('User workflow tests', () => {
                                 expect(savedtask.description).to.be.equal(task.description);
                                 expect(savedtask.priority).to.be.equal(task.priority);
                                 expect(savedtask.deadline).to.be.equal(task.deadline);
-                                expect(savedtask.situation).to.be.equal(task.situation);
 
                                 // 4) Delete task
                                 chai.request(server)
