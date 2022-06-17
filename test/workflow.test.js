@@ -44,6 +44,7 @@ describe('User workflow tests', () => {
                             description: "Test task Description",
                             priority: 10,
                             deadline: "2022-05-23T00:00:00.000Z",
+                            situation: "Done"
                         };
 
                         chai.request(server)
@@ -61,10 +62,43 @@ describe('User workflow tests', () => {
                                 expect(savedtask.description).to.be.equal(task.description);
                                 expect(savedtask.priority).to.be.equal(task.priority);
                                 expect(savedtask.deadline).to.be.equal(task.deadline);
+                                expect(savedtask.situation).to.be.equal(task.situation);
 
                                 // 4) Verify one task in test DB
                                 chai.request(server)
                                     .get('/api/tasks')
+                                    .end((err, res) => {
+
+                                        // Asserts
+                                        expect(res.status).to.be.equal(200);
+                                        expect(res.body).to.be.a('array');
+                                        expect(res.body.length).to.be.eql(1);
+
+                                        done();
+                                    });
+                            });
+                            // 5) Create new list
+                        let list =
+                        {
+                            title: "List"
+                        };
+
+                        chai.request(server)
+                            .post('/api/lists')
+                            .set({ "auth-token": token })
+                            .send(list)
+                            .end((err, res) => {
+                                // Asserts
+                                expect(res.status).to.be.equal(201);
+                                expect(res.body).to.be.a('array');
+                                expect(res.body.length).to.be.eql(1);
+
+                                let savedlist = res.body[0];
+                                expect(savedlist.title).to.be.equal(list.title);
+
+                                // 6) Verify one list in test DB
+                                chai.request(server)
+                                    .get('/api/lists')
                                     .end((err, res) => {
 
                                         // Asserts
@@ -118,7 +152,8 @@ describe('User workflow tests', () => {
                             title: "Task",
                             description: "Test task Description",
                             priority: 10,
-                            deadline: "2022-05-23T00:00:00.000Z"
+                            deadline: "2022-05-23T00:00:00.000Z",
+                            situation: "Done"
                         };
 
                         chai.request(server)
@@ -137,6 +172,7 @@ describe('User workflow tests', () => {
                                 expect(savedtask.description).to.be.equal(task.description);
                                 expect(savedtask.priority).to.be.equal(task.priority);
                                 expect(savedtask.deadline).to.be.equal(task.deadline);
+                                expect(savedtask.situation).to.be.equal(task.situation);
 
                                 // 4) Delete task
                                 chai.request(server)
@@ -153,8 +189,42 @@ describe('User workflow tests', () => {
 
                             });
                     });
+                     // 5) Create new list
+                     let list =
+                     {
+                         title: "List"
+                     };
+
+                     chai.request(server)
+                         .post('/api/lists')
+                         .set({ "auth-token": token })
+                         .send(list)
+                         .end((err, res) => {
+
+                             // Asserts
+                             expect(res.status).to.be.equal(201);
+                             expect(res.body).to.be.a('array');
+                             expect(res.body.length).to.be.eql(1);
+
+                             let savedlist = res.body[0];
+                             expect(savedlist.title).to.be.equal(list.title);
+
+                             // 6) Delete list
+                             chai.request(server)
+                                 .delete('/api/lists/' + savedlist._id)
+                                 .set({ "auth-token": token })
+                                 .end((err, res) => {
+
+                                     // Asserts
+                                     expect(res.status).to.be.equal(200);
+                                     const actualVal = res.body.message;
+                                     expect(actualVal).to.be.equal('list was successfully deleted.');
+                                     done();
+                                 });
+
+                         });
+                 });
             });
-    });
 
 
 
